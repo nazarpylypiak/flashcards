@@ -1,0 +1,32 @@
+<mat-toolbar
+  color="primary"
+  class="flex flex-wrap items-center justify-between gap-3 px-4 py-2 shadow-md"
+>
+  <!-- Left section -->
+  <div class="flex items-center gap-3">
+    <span class="text-lg font-semibold tracking-wide">Flashcards App</span>
+  </div>
+
+  <!-- Search field -->
+  <div
+    class="flex items-center bg-white/15 hover:bg-white/25 rounded-lg px-2 py-1 gap-2 w-full max-w-md flex-grow sm:flex-grow-0 border-1"
+  >
+    <mat-icon class="text-white/70">search</mat-icon>
+
+    <input
+      [formControl]="searchControl"
+      type="search"
+      placeholder="Search decks or cards"
+      class="flex-1 bg-transparent outline-none text-sm placeholder-white/70"
+    />
+  </div>
+
+  <button
+  (click)="addNewDeck()"
+    mat-flat-button
+    color="accent"
+    class="!rounded-xl !px-4 !py-1 !text-sm font-medium"
+  >
+    Add New Deck
+  </button>
+</mat-toolbar>

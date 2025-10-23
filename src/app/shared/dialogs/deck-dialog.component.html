@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<mat-dialog-content>
+  <mat-form-field appearance="outline">
+    <mat-label>Deck name:</mat-label>
+    <input #nameCtrl="ngModel" matInput [(ngModel)]="name" required />
+
+    <mat-error>
+      @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
+        @if (nameCtrl.hasError('required')) {
+          Name is required
+        }
+      }
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button matButton (click)="addDeck()">Add</button>
+  <button matButton mat-dialog-close cdkFocusInitial>Cancel</button>
+</mat-dialog-actions>
