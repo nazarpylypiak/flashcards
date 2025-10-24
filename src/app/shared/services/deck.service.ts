@@ -11,7 +11,6 @@ export class DeckService {
 
   saveToStorage(decks: Deck[]) {
     localStorage.setItem(this.storageKey, JSON.stringify(decks));
-    this.decks$.next(decks);
   }
 
   loadFromStorage(): Deck[] {
@@ -24,9 +23,17 @@ export class DeckService {
   }
 
   addDeck(deck: Partial<Deck>) {
-    const decks = [...this.decks$.getValue(), deck as Deck];
+    const oldDecks = this.decks$.getValue();
+    const newDeck: Deck = {
+      ...deck,
+      id: (oldDecks.length > 0
+        ? +oldDecks[oldDecks.length - 1].id + 1
+        : 0
+      ).toString(),
+    } as Deck;
+    const decks = [...oldDecks, newDeck];
     this.saveToStorage(decks);
-    return of(deck as Deck);
+    return of(newDeck);
   }
 
   getDeck(id: string): Observable<Deck | null> {
