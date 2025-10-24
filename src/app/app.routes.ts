@@ -14,6 +14,13 @@ export const appRoutes: Route[] = [
           ),
       },
       {
+        path: 'decks/create-deck',
+        loadComponent: () =>
+          import('./features/decks/create-deck/create-deck.component').then(
+            (m) => m.CreateDeckComponent,
+          ),
+      },
+      {
         path: 'decks/:id',
         loadComponent: () =>
           import('./features/decks/deck-detail/deck-detail.component').then(

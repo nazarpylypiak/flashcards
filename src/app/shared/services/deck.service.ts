@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { Deck } from '../models/deck.model';
 
 @Injectable({
@@ -7,7 +7,6 @@ import { Deck } from '../models/deck.model';
 })
 export class DeckService {
   private storageKey = 'flashcards-decks';
-  private decks$ = new BehaviorSubject<Deck[]>(this.loadFromStorage());
 
   saveToStorage(decks: Deck[]) {
     localStorage.setItem(this.storageKey, JSON.stringify(decks));
@@ -19,11 +18,11 @@ export class DeckService {
   }
 
   getDecks() {
-    return this.decks$.asObservable();
+    return of(this.loadFromStorage());
   }
 
   addDeck(deck: Partial<Deck>) {
-    const oldDecks = this.decks$.getValue();
+    const oldDecks = this.loadFromStorage();
     const newDeck: Deck = {
       ...deck,
       id: (oldDecks.length > 0
@@ -45,15 +44,15 @@ export class DeckService {
   }
 
   updateDeck(deck: Deck) {
-    const decks = this.decks$
-      .getValue()
-      .map((d) => (d.id === deck.id ? deck : d));
+    const decks = this.loadFromStorage().map((d) =>
+      d.id === deck.id ? deck : d,
+    );
     this.saveToStorage(decks);
     return of(deck);
   }
 
   deleteDeck(id: string) {
-    const decks = this.decks$.getValue().filter((d) => id !== d.id);
+    const decks = this.loadFromStorage().filter((d) => id !== d.id);
     this.saveToStorage(decks);
     return of({ message: 'delete successfully' });
   }

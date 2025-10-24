@@ -9,11 +9,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  DeckDialogComponent,
-  DeckDialogData,
-} from '@shared/dialogs/deck-dialog.component';
 import { Deck } from '@shared/models/deck.model';
 import * as DeckActions from '@store/actions/deck.actions';
 import {
@@ -33,6 +30,7 @@ import { Observable } from 'rxjs';
 export class DeckListComponent implements OnInit {
   private store = inject(Store);
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   decks$: Observable<Deck[]>;
   loading$: Observable<boolean>;
@@ -48,20 +46,12 @@ export class DeckListComponent implements OnInit {
     this.store.dispatch(DeckActions.loadDecks());
   }
 
-  deckClick(deck: Deck) {}
+  deckClick(deck: Deck) {
+    this.router.navigate(['decks', deck.id]);
+  }
 
   editDeck(deck: Deck) {
-    const dialogRef = this.dialog.open<
-      DeckDialogComponent,
-      DeckDialogData,
-      Deck
-    >(DeckDialogComponent, { data: { deck, mode: 'edit' } });
-
-    dialogRef.afterClosed().subscribe({
-      next: (deck) => {
-        this.store.dispatch(DeckActions.updateDeck({ deck }));
-      },
-    });
+    this.router.navigate(['decks', deck.id]);
   }
 
   deleteDeck(id: string) {

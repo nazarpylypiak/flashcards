@@ -1,0 +1,33 @@
+<form
+  (ngSubmit)="onSubmit()"
+  [formGroup]="deckForm"
+  class="flex flex-col w-full"
+>
+  <mat-form-field class="pt-2 pr-12 pb-2 pl-12 mb-3" appearance="outline">
+    <mat-label>Deck name:</mat-label>
+    <input formControlName="name" matInput placeholder="Enter a title..." />
+
+    @if (nameCtrl.invalid && (nameCtrl.dirty || nameCtrl.touched)) {
+      <mat-error>
+        @if (nameCtrl.hasError('required')) {
+          Name is required
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field class="pt-2 pr-12 pb-2 pl-12 mb-3" appearance="outline">
+    <textarea
+      formControlName="description"
+      matInput
+      placeholder="Add a description..."
+      rows="2"
+    ></textarea>
+  </mat-form-field>
+
+  <div class="flex justify-end pr-12 pb-2 pl-12 mb-3">
+    <button type="submit" matButton>
+      {{ id ? 'Save Deck' : 'Add Deck' }}
+    </button>
+  </div>
+</form>

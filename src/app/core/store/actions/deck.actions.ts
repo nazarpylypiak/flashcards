@@ -62,6 +62,22 @@ export const deleteDeckFailure = createAction(
   props<{ error: string }>(),
 );
 
+// Load Deck by id
+export const loadDeckById = createAction(
+  '[Deck Detail Page] Load Deck',
+  props<{ id: string }>(),
+);
+
+export const loadDeckByIdSuccess = createAction(
+  '[Deck API] Load Deck Success',
+  props<{ deck: Deck }>(),
+);
+
+export const loadDeckByIdFailure = createAction(
+  '[Deck API] Load Deck Failure',
+  props<{ error: string }>(),
+);
+
 // Select Deck
 export const selectDeck = createAction(
   '[Deck] Select Deck',

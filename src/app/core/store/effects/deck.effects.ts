@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { DeckService } from '../../../shared/services/deck.service';
 import * as DeckActions from '../actions/deck.actions';
 
@@ -8,6 +9,7 @@ import * as DeckActions from '../actions/deck.actions';
 export class DeckEffects {
   private actions$ = inject(Actions);
   private deckService = inject(DeckService);
+  private router = inject(Router);
 
   loadDecks$ = createEffect(() =>
     this.actions$.pipe(
@@ -62,6 +64,29 @@ export class DeckEffects {
           catchError((error) =>
             of(DeckActions.deleteDeckFailure({ error: error.message })),
           ),
+        ),
+      ),
+    ),
+  );
+
+  navigateAfterAdd$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DeckActions.addDeckSuccess),
+        tap(() => {
+          this.router.navigate(['/decks']);
+        }),
+      ),
+    { dispatch: false },
+  );
+
+  loadDeckById$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DeckActions.loadDeckById),
+      mergeMap(({ id }) =>
+        this.deckService.getDeck(id).pipe(
+          map((deck) => DeckActions.loadDeckByIdSuccess({ deck })),
+          catchError((error) => of(DeckActions.loadDeckByIdFailure({ error }))),
         ),
       ),
     ),

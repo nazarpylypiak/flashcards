@@ -32,7 +32,7 @@
 
       <mat-card-actions class="flex justify-end gap-2 p-4">
         <button
-          (click)="editDeck(deck)"
+          (click.stop)="editDeck(deck)"
           [attr.data-testId]="'edit-btn-' + deck.id"
           mat-button
           color="primary"
@@ -41,7 +41,7 @@
           Edit
         </button>
         <button
-          (click)="deleteDeck(deck.id)"
+          (click.stop)="deleteDeck(deck.id)"
           [attr.data-testId]="'delete-btn-' + deck.id"
           mat-button
           color="warn"
@@ -52,6 +52,11 @@
       </mat-card-actions>
     </mat-card>
   } @empty {
-    <div data-testId="empty-decks">No decks</div>
+    <div
+      class="col-span-full flex items-center justify-center h-64"
+      data-testId="empty-decks"
+    >
+      No decks
+    </div>
   }
 </div>

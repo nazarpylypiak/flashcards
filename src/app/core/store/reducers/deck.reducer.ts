@@ -76,10 +76,18 @@ export const deckReducer = createReducer(
     error,
   })),
 
-  // Select Deck
-  on(DeckActions.selectDeck, (state, { deck }) => ({
+  // Load deck
+  on(DeckActions.loadDeckById, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(DeckActions.loadDeckByIdSuccess, (state, { deck }) => ({
     ...state,
     selectedDeck: deck,
+  })),
+  on(DeckActions.loadDeckByIdFailure, (state, { error }) => ({
+    ...state,
+    error,
   })),
 
   // Clear Error

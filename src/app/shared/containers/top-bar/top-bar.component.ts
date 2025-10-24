@@ -6,14 +6,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbar } from '@angular/material/toolbar';
-import { DeckDetailComponent } from '@features/decks/deck-detail/deck-detail.component';
-import { ReqDeck } from '@models/deck.model';
+import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  DeckDialogComponent,
-  DeckDialogData,
-} from '@shared/dialogs/deck-dialog.component';
-import * as DeckActions from '@store/actions/deck.actions';
 
 @Component({
   selector: 'app-top-bar',
@@ -32,6 +26,7 @@ import * as DeckActions from '@store/actions/deck.actions';
 export class TopBarComponent {
   private dialog = inject(MatDialog);
   private store = inject(Store);
+  private router = inject(Router);
 
   searchControl = new FormControl('');
 
@@ -40,16 +35,18 @@ export class TopBarComponent {
   }
 
   addNewDeck() {
-    const dialogRef = this.dialog.open<
-      DeckDetailComponent,
-      DeckDialogData,
-      ReqDeck | null
-    >(DeckDialogComponent, { data: { mode: 'add' } });
+    this.router.navigate(['decks', 'create-deck']);
+    // const dialogRef = this.dialog.open<
+    //   DeckDetailComponent,
+    //   DeckDialogData,
+    //   ReqDeck | null
+    // >(DeckDialogComponent, { data: { mode: 'add' } });
 
-    dialogRef.afterClosed().subscribe({
-      next: (res) => {
-        this.store.dispatch(DeckActions.addDeck({ deck: res }));
-      },
-    });
+    // dialogRef.afterClosed().subscribe({
+    //   next: (res) => {
+    //     if (!res) return;
+    //     this.store.dispatch(DeckActions.addDeck({ deck: res }));
+    //   },
+    // });
   }
 }

@@ -1,1 +1,45 @@
-<p>deck-detail works!</p>
+<div class="p-6 flex flex-col items-center">
+  @if (deck$ | async; as deck) {
+    @if (edit()) {
+      <app-deck-form
+        (save)="onUpdate($event)"
+        [initialValue]="deck"
+      ></app-deck-form>
+    } @else {
+      <mat-card
+        class="w-full max-w-md bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6"
+      >
+        <mat-card-header>
+          <mat-card-title
+            class="text-xl font-semibold text-gray-900 dark:text-gray-100"
+          >
+            {{ deck.name }}
+          </mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content
+          class="mt-4 space-y-2 text-gray-700 dark:text-gray-300"
+        >
+          <p><strong>ID:</strong> {{ deck.id }}</p>
+          <!-- add more deck details here -->
+        </mat-card-content>
+
+        <mat-card-actions class="flex justify-end mt-6">
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="edit.set(!edit())"
+            data-testId="edit-deck-btn"
+          >
+            Edit
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    }
+  } @else {
+    <div class="flex flex-col items-center justify-center h-64">
+      <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      <p class="mt-3 text-gray-500 dark:text-gray-400">Loading...</p>
+    </div>
+  }
+</div>
