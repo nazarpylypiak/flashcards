@@ -10,21 +10,21 @@ export const appRoutes: Route[] = [
         path: 'decks',
         loadComponent: () =>
           import('./features/decks/deck-list/deck-list.component').then(
-            (m) => m.DeckListComponent
+            (m) => m.DeckListComponent,
           ),
       },
       {
         path: 'decks/:id',
         loadComponent: () =>
           import('./features/decks/deck-detail/deck-detail.component').then(
-            (m) => m.DeckDetailComponent
+            (m) => m.DeckDetailComponent,
           ),
       },
+      {
+        path: '',
+        redirectTo: 'decks',
+        pathMatch: 'full',
+      },
     ],
-  },
-  {
-    path: '',
-    redirectTo: 'decks',
-    pathMatch: 'full',
   },
 ];

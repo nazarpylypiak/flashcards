@@ -1,12 +1,57 @@
-@for (deck of decks$ | async; track deck.id) {
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title> Australian Shepherd</mat-card-title>
-      <mat-card-subtitle>Herding group</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-actions>
-      <button matButton>Edit</button>
-      <button matButton>Delete</button>
-    </mat-card-actions>
-  </mat-card>
-}
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+  @if (loading$ | async) {
+    <mat-progress-bar
+      data-testId="loading"
+      mode="indeterminate"
+    ></mat-progress-bar>
+  }
+
+  @if (error$ | async; as error) {
+    <div data-testId="error-msg">{{ error }}</div>
+  }
+
+  @for (deck of decks$ | async; track deck.id) {
+    <mat-card
+      (click)="deckClick(deck)"
+      [attr.data-testId]="'deck-card-' + deck.id"
+      class="bg-white dark:bg-gray-800 shadow-md hover:shadow-lg transition-shadow duration-200 rounded-2xl overflow-hidden"
+    >
+      <mat-card-header
+        class="border-b border-gray-200 dark:border-gray-700 p-4"
+      >
+        <mat-card-title
+          [attr.data-testId]="'deck-name-' + deck.id"
+          class="text-lg font-semibold text-gray-900 dark:text-gray-100"
+        >
+          {{ deck.name }}
+        </mat-card-title>
+        <mat-card-subtitle class="text-sm text-gray-500 dark:text-gray-400">
+          Deck ID: {{ deck.id }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-actions class="flex justify-end gap-2 p-4">
+        <button
+          (click)="editDeck(deck)"
+          [attr.data-testId]="'edit-btn-' + deck.id"
+          mat-button
+          color="primary"
+          class="!text-blue-600 dark:!text-blue-400 hover:!bg-blue-50 dark:hover:!bg-blue-900/20 rounded-lg px-3"
+        >
+          Edit
+        </button>
+        <button
+          (click)="deleteDeck(deck.id)"
+          [attr.data-testId]="'delete-btn-' + deck.id"
+          mat-button
+          color="warn"
+          class="!text-red-600 dark:!text-red-400 hover:!bg-red-50 dark:hover:!bg-red-900/20 rounded-lg px-3"
+        >
+          Delete
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  } @empty {
+    <div data-testId="empty-decks">No decks</div>
+  }
+</div>

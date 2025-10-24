@@ -7,3 +7,5 @@ export interface Deck {
   createdAt: Date;
   flashcards: Flashcard[];
 }
+
+export type ReqDeck = Omit<Deck, 'id' | 'createdAt' | 'updatedAt'>;

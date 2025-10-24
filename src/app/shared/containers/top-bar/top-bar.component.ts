@@ -6,13 +6,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatToolbar } from '@angular/material/toolbar';
-import { DeckDetailComponent } from '../../../features/decks/deck-detail/deck-detail.component';
+import { DeckDetailComponent } from '@features/decks/deck-detail/deck-detail.component';
+import { ReqDeck } from '@models/deck.model';
+import { Store } from '@ngrx/store';
 import {
   DeckDialogComponent,
   DeckDialogData,
-} from '../../dialogs/deck-dialog.component';
-import { Deck } from '../../models/deck.model';
-import { DeckService } from '../../services/deck.service';
+} from '@shared/dialogs/deck-dialog.component';
+import * as DeckActions from '@store/actions/deck.actions';
 
 @Component({
   selector: 'app-top-bar',
@@ -29,8 +30,8 @@ import { DeckService } from '../../services/deck.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TopBarComponent {
-  private deckService = inject(DeckService);
   private dialog = inject(MatDialog);
+  private store = inject(Store);
 
   searchControl = new FormControl('');
 
@@ -42,12 +43,12 @@ export class TopBarComponent {
     const dialogRef = this.dialog.open<
       DeckDetailComponent,
       DeckDialogData,
-      Deck | null
+      ReqDeck | null
     >(DeckDialogComponent, { data: { mode: 'add' } });
 
     dialogRef.afterClosed().subscribe({
       next: (res) => {
-        console.log(res);
+        this.store.dispatch(DeckActions.addDeck({ deck: res }));
       },
     });
   }

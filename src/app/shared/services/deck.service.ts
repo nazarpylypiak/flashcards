@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, of } from 'rxjs';
 import { Deck } from '../models/deck.model';
 
 @Injectable({
@@ -23,16 +23,17 @@ export class DeckService {
     return this.decks$.asObservable();
   }
 
-  addDeck(deck: Deck) {
-    const decks = [...this.decks$.getValue(), deck];
+  addDeck(deck: Partial<Deck>) {
+    const decks = [...this.decks$.getValue(), deck as Deck];
     this.saveToStorage(decks);
+    return of(deck as Deck);
   }
 
   getDeck(id: string): Observable<Deck | null> {
     return this.getDecks().pipe(
       map((res) => {
         return res.find((d) => d.id === id) ?? null;
-      })
+      }),
     );
   }
 
@@ -41,10 +42,12 @@ export class DeckService {
       .getValue()
       .map((d) => (d.id === deck.id ? deck : d));
     this.saveToStorage(decks);
+    return of(deck);
   }
 
   deleteDeck(id: string) {
     const decks = this.decks$.getValue().filter((d) => id !== d.id);
     this.saveToStorage(decks);
+    return of({ message: 'delete successfully' });
   }
 }
