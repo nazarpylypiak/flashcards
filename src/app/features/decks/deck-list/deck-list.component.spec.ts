@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 
 import { MatDialog } from '@angular/material/dialog';
+import { By } from '@angular/platform-browser';
 import { MemoizedSelector } from '@ngrx/store';
 import {
   selectAllDecks,
@@ -107,10 +108,11 @@ describe('DeckListComponent', () => {
     store.refreshState();
     fixture.detectChanges();
 
-    const editDeck: HTMLButtonElement = fixture.nativeElement.querySelector(
-      `[data-testId="edit-btn-${deck.id}"]`,
+    const editBtn = fixture.debugElement.query(
+      By.css(`[data-testId="edit-btn-${deck.id}"]`),
     );
-    editDeck.click();
+    editBtn.triggerEventHandler('click.stop', new Event('click'));
+
     fixture.detectChanges();
 
     expect(component.editDeck).toHaveBeenCalledWith(deck);
@@ -124,10 +126,10 @@ describe('DeckListComponent', () => {
     store.refreshState();
     fixture.detectChanges();
 
-    const editButton: HTMLButtonElement = fixture.nativeElement.querySelector(
-      `[data-testId="delete-btn-${deck.id}"]`,
+    const deleteBtn = fixture.debugElement.query(
+      By.css(`[data-testId="delete-btn-${deck.id}"]`),
     );
-    editButton.click();
+    deleteBtn.triggerEventHandler('click.stop', new Event('click'));
     fixture.detectChanges();
 
     const deckEl = fixture.nativeElement.querySelector(

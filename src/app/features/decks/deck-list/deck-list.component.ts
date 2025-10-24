@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatDialog } from '@angular/material/dialog';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -29,7 +28,6 @@ import { Observable } from 'rxjs';
 })
 export class DeckListComponent implements OnInit {
   private store = inject(Store);
-  private dialog = inject(MatDialog);
   private router = inject(Router);
 
   decks$: Observable<Deck[]>;
