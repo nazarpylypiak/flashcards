@@ -1,0 +1,33 @@
+<form [formGroup]="form" (ngSubmit)="onSave()">
+  <mat-form-field>
+    <mat-label>Front:</mat-label>
+    <input type="text" matInput formControlName="front" />
+
+    @if (frontCtrl.invalid && (frontCtrl.dirty || frontCtrl.touched)) {
+      <mat-error>
+        @if (frontCtrl.hasError('required')) {
+          Name is required
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Back:</mat-label>
+    <input type="text" matInput formControlName="back" />
+
+    @if (backCtrl.invalid && (backCtrl.dirty || backCtrl.touched)) {
+      <mat-error>
+        @if (backCtrl.hasError('required')) {
+          Name is required
+        }
+      </mat-error>
+    }
+  </mat-form-field>
+
+  <div class="flex justify-end pr-12 pb-2 pl-12 mb-3">
+    <button type="submit" matButton>
+      {{ id ? 'Save Deck' : 'Add Deck' }}
+    </button>
+  </div>
+</form>
